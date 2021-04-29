@@ -1,3 +1,4 @@
-from django.contrib import admin
+from facein_api.admin import main_admin_site
+from .models import User
 
-# Register your models here.
+main_admin_site.register(User)

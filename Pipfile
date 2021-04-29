@@ -4,10 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+flake8 = "*"
 
 [packages]
-django = "==3.0.5"
-djangorestframework = "==3.11.0"
+psycopg2-binary = "==2.8.5"
+dj-database-url = "==0.5.0"
+Django = "==2.2.12"
+python-decouple = "==3.3"
 
 [requires]
-python_version = "3.7"
+python_version = f"3.7"
