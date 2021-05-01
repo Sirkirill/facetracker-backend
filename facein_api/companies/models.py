@@ -6,7 +6,8 @@ class Company(models.Model):
     Company model. Company is a customer of FaceIn.
 
     Attributes:
-        name: Name of the company.
+        name (str): Name of the company.
+        is_active (bool): Company is using FaceIn currently.
 
     """
     name = models.CharField(max_length=255,
@@ -23,6 +24,13 @@ class Company(models.Model):
 
 class Room(models.Model):
     """
+    Room of the company's office.
+
+    company (Company): Company - owner of the room.
+    name (str): Room name.
+    info (str): Room description.
+    is_whitelisted (bool): if True only restricted group of people is authorized to entrance
+        otherwise everyone is authorized except the black list.
     """
     company = models.ForeignKey(Company,
                                 on_delete=models.CASCADE,

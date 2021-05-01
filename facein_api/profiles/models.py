@@ -40,6 +40,20 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """
+    User model. User can exist only in one company otherwise user has to have several profiles.
+
+    Attributes:
+        username (str): Unique username. Is used in auth system.
+        first_name (str): User's first name.
+        last_name (str): User's last name.
+        is_security (bool): True if User is a security guard and has a mobile app False otherwise.
+        is_admin (bool): True if User is an admin of the customer company.
+        is_blacklisted (bool): True if User is in Company black list.
+        info (str): User description.
+        date_joined (datetime): Date and time when user profile was created.
+
+    """
     username_validator = UnicodeUsernameValidator()
 
     username = models.CharField(
