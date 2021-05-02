@@ -1,3 +1,7 @@
-from django.contrib import admin
+from facein_api.admin import main_admin_site
 
-# Register your models here.
+from companies.models import Company, Room, BlackWhiteList
+
+main_admin_site.register(Company)
+main_admin_site.register(Room)
+main_admin_site.register(BlackWhiteList)

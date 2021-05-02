@@ -1,4 +1,7 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+
+from profiles.models import User
 
 
 class Company(models.Model):
@@ -51,3 +54,40 @@ class Room(models.Model):
         verbose_name = 'Помещение'
         verbose_name_plural = 'Помещения'
         unique_together = ('company', 'name')
+
+
+class BlackWhiteList(models.Model):
+    """
+    Relation between User and Room. Stores room's white or black list of users.
+    Black list is list of users which can't come to the room.
+    White list is list of users which only can come to the room.
+
+    Attributes:
+        user (User): Company User.
+        room (Room): Company room.
+        is_blacklisted (bool): True if user is in room black list.
+        is_whitelisted (bool): True if user is in room white list.
+
+    """
+
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='rooms',
+                             related_query_name='room',
+                             verbose_name='Пользователь')
+    room = models.ForeignKey(Room,
+                             on_delete=models.CASCADE,
+                             related_name='user_lists',
+                             related_query_name='user_list',
+                             verbose_name='Помещение')
+    is_blacklisted = models.BooleanField(default=False, verbose_name='В черном списке')
+    is_whitelisted = models.BooleanField(default=False, verbose_name='В белом списке')
+
+    class Meta:
+        verbose_name = 'Черный и Белый Списки Помещения'
+        verbose_name_plural = 'Черный и Белый Списки Помещений'
+        unique_together = ['room', 'user']
+
+    def clean(self):
+        if self.is_blacklisted and self.is_whitelisted:
+            raise ValidationError("User can't be both in black list and white list")
