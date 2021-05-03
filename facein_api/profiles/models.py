@@ -7,6 +7,9 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from companies.models import Company
+from companies.models import Room
+
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -35,6 +38,9 @@ class UserManager(BaseUserManager):
 
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
+
+        company = Company.objects.get(name='FaceIn')
+        extra_fields.setdefault('company', company)
 
         return self._create_user(username, password, **extra_fields)
 
@@ -73,16 +79,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         _('security status'),
         default=False,
         help_text=_(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
+            'Designates whether this user should be treated as '
+            'security guard of the customer company. '
         ),
     )
     is_admin = models.BooleanField(
         _('admin status'),
         default=False,
         help_text=_(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
+            'Designates whether this user should be treated as admin of the customer company. '
         ),
     )
     is_blacklisted = models.BooleanField(
@@ -90,7 +95,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text=_(
             'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
         ),
     )
 
@@ -103,6 +107,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True
     )
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
+
+    company = models.ForeignKey(Company,
+                                on_delete=models.CASCADE,
+                                verbose_name='Компания',
+                                related_name='users',
+                                related_query_name='user')
 
     objects = UserManager()
 
@@ -119,6 +129,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def clean(self):
         if self.is_superuser and self.is_blacklisted:
             raise ValidationError(_("Superuser can't be blocked"))
+        company = Company.objects.get(name='FaceIn')
+        if self.is_superuser and self.company_id != company.id:
+            raise ValidationError("Superuser should be a member of FaceIn company")
 
     def get_full_name(self):
         """
@@ -136,3 +149,39 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_superuser
+
+
+class BlackWhiteList(models.Model):
+    """
+    Relation between User and Room. Stores room's white or black list of users.
+    Black list is list of users which can't come to the room.
+    White list is list of users which only can come to the room.
+
+    Attributes:
+        user (User): Company User.
+        room (Room): Company room.
+        is_blacklisted (bool): True if user is in room black list.
+        is_whitelisted (bool): True if user is in room white list.
+
+    """
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='rooms',
+                             related_query_name='room',
+                             verbose_name='Пользователь')
+    room = models.ForeignKey(Room,
+                             on_delete=models.CASCADE,
+                             related_name='user_lists',
+                             related_query_name='user_list',
+                             verbose_name='Помещение')
+    is_blacklisted = models.BooleanField(default=False, verbose_name='В черном списке')
+    is_whitelisted = models.BooleanField(default=False, verbose_name='В белом списке')
+
+    class Meta:
+        verbose_name = 'Черный и Белый Списки Помещения'
+        verbose_name_plural = 'Черный и Белый Списки Помещений'
+        unique_together = ['room', 'user']
+
+    def clean(self):
+        if self.is_blacklisted and self.is_whitelisted:
+            raise ValidationError("User can't be both in black list and white list")

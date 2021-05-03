@@ -11,6 +11,9 @@ psycopg2-binary = "==2.8.5"
 dj-database-url = "==0.5.0"
 Django = "==2.2.12"
 python-decouple = "==3.3"
+djangorestframework = "==3.11.0"
+drf-yasg = "==1.17.1"
+redis = "==3.5.2"
 
 [requires]
-python_version = f"3.7"
+python_version = "3.7"
