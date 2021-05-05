@@ -121,10 +121,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+        ordering = ['username']
         constraints = [
             models.CheckConstraint(check=~models.Q(is_superuser=True, is_blacklisted=True),
                                    name='superusers_are_not_blocked')
         ]
+
+    def __str__(self):
+        return self.username
 
     def clean(self):
         if self.is_superuser and self.is_blacklisted:
