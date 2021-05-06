@@ -85,6 +85,19 @@ class RedisAuthentication(BaseAuthentication):
         pipe.execute()
 
     @staticmethod
+    def drop_current_session(request):
+        """
+        Drop a current session from redis.
+
+        Args:
+            token (str): Session token.
+
+        """
+
+        auth_header = smart_str(get_authorization_header(request)).split()
+        RedisAuthentication.drop_session(auth_header[1])
+        
+    @staticmethod
     def create_user_session(user_id):
         """
         Create a new session for a user.

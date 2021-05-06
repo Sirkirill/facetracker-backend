@@ -9,6 +9,7 @@ from rest_framework.response import Response
 
 from profiles.models import User
 from views import LoginView
+from views import LogoutView
 from .admin import main_admin_site
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -40,6 +41,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('admin/', main_admin_site.urls),
     path('api/login/', LoginView.as_view(), name='login'),
+    path('api/logout/', LogoutView.as_view(), name='logout'),
 ]
 
 schema_view = get_schema_view(
