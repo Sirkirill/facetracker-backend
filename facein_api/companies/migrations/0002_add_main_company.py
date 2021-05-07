@@ -20,7 +20,6 @@ def remove_main_company(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('companies', '0001_add_companies_rooms'),
     ]

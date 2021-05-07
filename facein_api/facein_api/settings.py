@@ -14,12 +14,10 @@ import os
 
 import dj_database_url
 from decouple import config
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from redis import Redis
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -48,7 +46,7 @@ INSTALLED_APPS = [
     'companies.apps.CompaniesConfig',
     'moves.apps.MovesConfig',
     'photos.apps.PhotosConfig',
-    
+
     'rest_framework',
     'drf_yasg'
 ]
@@ -83,16 +81,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'facein_api.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL')
-    )
+    ),
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -112,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -125,7 +120,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -140,7 +134,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'authentication.RedisAuthentication',
+        'facein_api.authentication.RedisAuthentication',
     ],
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',

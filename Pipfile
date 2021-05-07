@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 flake8 = "*"
+pytest-django = "*"
 
 [packages]
 psycopg2-binary = "==2.8.5"

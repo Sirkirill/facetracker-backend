@@ -1,0 +1,14 @@
+[flake8]
+exclude =
+       venv,
+       manage.py,
+       migrations,
+max-line-length = 100
+ignore = D200,
+       D204, # blank line required after class docstring #(It's not compatible with our local style)
+       D100, # Missing docstring in public module #(e.g. standard Django files: urls.py, etc)
+       D104, # Missing docstring in public package #(e.g. __init__ files)
+       D105, # Missing docstring in magic method
+       D106, # Missing docstring in public nested class
+       Q000, # Allow double quotes (once Black is activated, single quotes will be replaced)
+       Q001, # """ instead of '''

@@ -5,9 +5,9 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.authentication import get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed
 
+from facein_api.settings import redis_client
+from facein_api.settings import SESSION_TTL
 from profiles.models import User
-from settings import redis_client
-from settings import SESSION_TTL
 
 SESSION_RKEY = 'token/{}'
 
@@ -18,7 +18,7 @@ class RedisAuthentication(BaseAuthentication):
     """
     keyword = 'Token'
 
-    def authenticate(self, request, username=None, password=None):
+    def authenticate(self, request):
         """
         Authenticate user using pair (session token: user_id) stored in Redis.
 
@@ -96,7 +96,7 @@ class RedisAuthentication(BaseAuthentication):
 
         auth_header = smart_str(get_authorization_header(request)).split()
         RedisAuthentication.drop_session(auth_header[1])
-        
+
     @staticmethod
     def create_user_session(user_id):
         """
