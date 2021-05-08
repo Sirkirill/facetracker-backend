@@ -13,17 +13,18 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 import dj_database_url
+import dj_redis_url
 from decouple import config
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from redis import Redis
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '2ad-#4y98_tlrzd3f(j0r!(p#o81iqolvgc_o$oz=lm@=+4$@c'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,13 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+    'drf_yasg',
+
     'profiles.apps.ProfilesConfig',
     'companies.apps.CompaniesConfig',
     'moves.apps.MovesConfig',
-    'photos.apps.PhotosConfig',
-
-    'rest_framework',
-    'drf_yasg'
+    'photos.apps.PhotosConfig'
 ]
 
 MIDDLEWARE = [
@@ -151,8 +152,7 @@ SWAGGER_SETTINGS = {
     'REFETCH_SCHEMA_ON_LOGOUT': True,
 }
 
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-SESSION_TTL = 60 * 60 * 24  # Session expiration time in seconds.
 
-redis_client = Redis(host=REDIS_HOST, port=REDIS_PORT)
+REDIS = dj_redis_url.config(default=config('REDIS_URL'))
+redis_client = Redis(host=REDIS['HOST'], port=REDIS['PORT'], password=REDIS['PASSWORD'])
+SESSION_TTL = 60 * 60 * 24  # Session expiration time in seconds.
