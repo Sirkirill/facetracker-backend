@@ -1,0 +1,1 @@
+FROM algolearnfaceinapi/facein_api:latest

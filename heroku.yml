@@ -1,0 +1,12 @@
+# heroku stack:set container is important to run docker
+
+build:
+  docker:
+    web: Dockerfile
+    worker: Dockerfile
+
+run:
+  web:
+    command:
+      - python /code/facein_api/manage.py runserver 0.0.0.0:$PORT --noreload
+    image: web
