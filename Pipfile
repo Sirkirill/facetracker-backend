@@ -16,6 +16,7 @@ python-decouple = "==3.3"
 djangorestframework = "==3.11.0"
 drf-yasg = "==1.17.1"
 redis = "==3.5.2"
+whitenoise = "==5.1.0"
 
 [requires]
 python_version = "3.7"
