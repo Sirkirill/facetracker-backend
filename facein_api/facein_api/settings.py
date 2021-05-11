@@ -157,3 +157,7 @@ SWAGGER_SETTINGS = {
 REDIS = dj_redis_url.config(default=config('REDIS_URL'))
 redis_client = Redis(host=REDIS['HOST'], port=REDIS['PORT'], password=REDIS['PASSWORD'])
 SESSION_TTL = 60 * 60 * 24  # Session expiration time in seconds.
+
+# Setup support for proxy headers
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
