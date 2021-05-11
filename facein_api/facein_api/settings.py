@@ -27,9 +27,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['facein-backend.herokuapp.com']
 
 AUTH_USER_MODEL = 'profiles.User'
 
@@ -151,7 +151,6 @@ SWAGGER_SETTINGS = {
     'REFETCH_SCHEMA_WITH_AUTH': True,
     'REFETCH_SCHEMA_ON_LOGOUT': True,
 }
-
 
 REDIS = dj_redis_url.config(default=config('REDIS_URL'))
 redis_client = Redis(host=REDIS['HOST'], port=REDIS['PORT'], password=REDIS['PASSWORD'])
