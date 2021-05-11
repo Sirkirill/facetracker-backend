@@ -66,3 +66,15 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USER }}/facein_api:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USER }}/facein_api:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: cd
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.1.6
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "facein-backend"
+          heroku_email: "dmytro.honcharov@nure.ua"
