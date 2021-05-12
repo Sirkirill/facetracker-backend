@@ -21,7 +21,7 @@ class LoginUser(UseCase):
         else:
             raise AuthenticationFailed('User password is wrong.')
 
-        return {'user': user.id, 'token': token}
+        return {'id': user.id, 'username': user.username, 'token': token}
 
 
 class LogoutUser(UseCase):
@@ -30,3 +30,23 @@ class LogoutUser(UseCase):
 
     def execute(self):
         RedisAuthentication.drop_current_session(self.request)
+
+
+class PromoteSecurity(UseCase):
+    """Make user a security guide."""
+    def __init__(self, user):
+        self.user = user
+
+    def execute(self):
+        self.user.is_security = True
+        self.user.save()
+
+
+class DemoteSecurity(UseCase):
+    """Take the security guard position from the user."""
+    def __init__(self, user):
+        self.user = user
+
+    def execute(self):
+        self.user.is_security = False
+        self.user.save()

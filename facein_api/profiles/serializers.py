@@ -11,12 +11,14 @@ class LoginSerializer(Serializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     """User serializer for manipulations made by user."""
+    company = serializers.SlugRelatedField(read_only=True, slug_field='name')
 
     class Meta:
         model = User
         fields = ('pk',
                   'username',
                   'first_name', 'last_name', 'info',
+                  'company',
                   'is_superuser', 'is_security', 'is_admin', 'is_blacklisted',
                   'date_joined', 'last_login')
         read_only_fields = ('pk',
@@ -26,12 +28,14 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class StaffSerializer(serializers.ModelSerializer):
     """User serializer for manipulations made by user admin."""
+    company = serializers.SlugRelatedField(read_only=True, slug_field='name')
 
     class Meta:
         model = User
         fields = ('pk',
                   'username',
                   'first_name', 'last_name', 'info',
+                  'company',
                   'is_superuser', 'is_security', 'is_admin', 'is_blacklisted',
                   'date_joined', 'last_login')
         read_only_fields = ('pk',

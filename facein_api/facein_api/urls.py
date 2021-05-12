@@ -4,44 +4,13 @@ from django.urls import path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-from rest_framework import routers
-from rest_framework import serializers
-from rest_framework import viewsets
 
-from profiles.models import User
-from profiles.views import LoginView
-from profiles.views import LogoutView
-from profiles.views import ProfileView
 from .admin import main_admin_site
 
 
-# Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username']
-
-
-# ViewSets define the view behavior.
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-# Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
-
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/profiles/', include('profiles.urls', namespace='profiles')),
     path('admin/', main_admin_site.urls),
-    path('api/login/', LoginView.as_view(), name='login'),
-    path('api/logout/', LogoutView.as_view(), name='logout'),
-    path('api/profile/<int:pk>', ProfileView.as_view(), name='profile'),
 ]
 
 schema_view = get_schema_view(
