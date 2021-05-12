@@ -43,6 +43,7 @@ jobs:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         REDIS_URL: ${{ secrets.REDIS_URL }}
+        TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
   cd:
     runs-on: ubuntu-latest

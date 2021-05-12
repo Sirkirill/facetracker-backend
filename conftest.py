@@ -34,7 +34,7 @@ def django_db_setup():
 def test_users(django_db_blocker):
     """
     Fixture which creates users which will be used for testing before running tests
-    if these users don't exist.
+    (if these users don't exist).
     """
     with django_db_blocker.unblock():
         for username, user_data in TEST_USERS.items():
