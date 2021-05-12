@@ -30,8 +30,6 @@ class RedisAuthentication(BaseAuthentication):
 
         Raises:
             AuthenticationFailed: If such token doesn't exist or expired or user doesn't exist.
-            PermissionDenied: If user is successfully authenticated but his account is deactivated.
-                In this case current session is dropped.
 
         """
 
