@@ -9,9 +9,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from common.permissions import Action
-from facein_api.permissions import IsAdmin
-from facein_api.permissions import IsSuperUser
-from facein_api.usecases import UseCaseMixin
+from common.permissions import IsAdmin
+from common.permissions import IsSuperUser
+from common.usecases import UseCaseMixin
 from profiles.serializers import ChangePasswordSerializer
 from profiles.serializers import LoginSerializer
 from profiles.serializers import ProfileSerializer

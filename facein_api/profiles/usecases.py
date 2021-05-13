@@ -2,7 +2,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.exceptions import ValidationError
 
 from facein_api.authentication import RedisAuthentication
-from facein_api.usecases import UseCase
+from common.usecases import UseCase
 from profiles.models import User
 
 
