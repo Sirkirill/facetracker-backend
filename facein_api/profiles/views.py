@@ -12,9 +12,11 @@ from common.permissions import Action
 from facein_api.permissions import IsAdmin
 from facein_api.permissions import IsSuperUser
 from facein_api.usecases import UseCaseMixin
+from profiles.serializers import ChangePasswordSerializer
 from profiles.serializers import LoginSerializer
 from profiles.serializers import ProfileSerializer
 from profiles.serializers import StaffSerializer
+from profiles.usecases import ChangePassword
 from profiles.usecases import LoginUser
 from profiles.usecases import LogoutUser
 
@@ -34,6 +36,21 @@ class LoginView(APIView, UseCaseMixin):
         data = self._run_usecase(**serializer.validated_data)
 
         return Response(data)
+
+
+class ChangePasswordView(APIView, UseCaseMixin):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ChangePasswordSerializer
+    usecase = ChangePassword
+
+    @swagger_auto_schema(request_body=ChangePasswordSerializer)
+    def put(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        self._run_usecase(request.user, **serializer.validated_data)
+
+        return Response(status=status.HTTP_200_OK)
 
 
 class LogoutView(APIView, UseCaseMixin):

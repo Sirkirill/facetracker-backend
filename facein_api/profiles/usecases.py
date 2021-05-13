@@ -1,4 +1,5 @@
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import ValidationError
 
 from facein_api.authentication import RedisAuthentication
 from facein_api.usecases import UseCase
@@ -49,4 +50,20 @@ class DemoteSecurity(UseCase):
 
     def execute(self):
         self.user.is_security = False
+        self.user.save()
+
+
+class ChangePassword(UseCase):
+    def __init__(self, user, old_password, new_password_1, new_password_2):
+        self.user = user
+
+        if not self.user.check_password(old_password):
+            raise AuthenticationFailed('Old password is incorrect.')
+        if new_password_1 != new_password_2:
+            raise ValidationError('Passwords are not the same')  # may be sent to serializer
+
+        self.password = new_password_1
+
+    def execute(self):
+        self.user.set_password(self.password)
         self.user.save()

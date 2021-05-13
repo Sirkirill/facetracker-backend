@@ -41,3 +41,9 @@ class StaffSerializer(serializers.ModelSerializer):
         read_only_fields = ('pk',
                             'is_superuser',
                             'date_joined', 'last_login')
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password_1 = serializers.CharField(required=True)
+    new_password_2 = serializers.CharField(required=True)
