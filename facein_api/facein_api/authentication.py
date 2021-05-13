@@ -5,9 +5,9 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.authentication import get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed
 
-from facein_api.settings import redis_client
-from facein_api.settings import SESSION_TTL
 from profiles.models import User
+from settings import redis_client
+from settings import SESSION_TTL
 
 SESSION_RKEY = 'token/{}'
 

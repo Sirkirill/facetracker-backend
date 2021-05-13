@@ -8,6 +8,8 @@ max-line-length = 100
 per-file-ignores =
     # undefined names for tests are ignored (multiuser_test decorator adds __globals__ to function)
     tests.py:F821,
+    # settings are imported but unused
+    */settings/__init__.py:F401, F403,
 
 ignore = D200,
        D204, # blank line required after class docstring

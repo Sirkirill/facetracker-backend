@@ -1,13 +1,14 @@
 from django.contrib.admin import AdminSite
+from django.utils.translation import gettext_lazy as _
 
 
 class MainAdminSite(AdminSite):
     """
     Admin Panel for FaceIn admins(superusers).
     """
-    site_header = "Main Admin Site"
-    site_title = "Main Admin Site"
-    index_title = "Main Admin Site"
+    site_header = _("FaceIn Admin")
+    site_title = _("FaceIn Admin")
+    index_title = _("FaceIn Admin")
 
     def has_permission(self, request):
         """

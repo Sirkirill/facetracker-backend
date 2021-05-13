@@ -1,4 +1,5 @@
 """facein_api URL Configuration"""
+from django.conf.urls.i18n import i18n_patterns
 from django.urls import include
 from django.urls import path
 from drf_yasg import openapi
@@ -7,11 +8,10 @@ from rest_framework import permissions
 
 from .admin import main_admin_site
 
-
 urlpatterns = [
     path('api/profiles/', include('profiles.urls', namespace='profiles')),
-    path('admin/', main_admin_site.urls),
-]
+] + i18n_patterns(path('admin/', main_admin_site.urls),
+                  prefix_default_language='ru')
 
 schema_view = get_schema_view(
     openapi.Info(
