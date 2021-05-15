@@ -6,9 +6,9 @@ class MainAdminSite(AdminSite):
     """
     Admin Panel for FaceIn admins(superusers).
     """
-    site_header = _("FaceIn Admin")
-    site_title = _("FaceIn Admin")
-    index_title = _("FaceIn Admin")
+    site_header = _("Admin Panel FaceIn")
+    site_title = _("Admin Panel FaceIn")
+    index_title = _("Admin Panel FaceIn")
 
     def has_permission(self, request):
         """

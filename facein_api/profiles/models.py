@@ -86,22 +86,19 @@ class User(AbstractBaseUser, PermissionsMixin):
         _('admin status'),
         default=False,
         help_text=_(
-            'Designates whether this user should be treated as admin of the customer company. '
+            _('Designates whether this user should be treated as admin of the customer company. ')
         ),
     )
     is_blacklisted = models.BooleanField(
-        _('black list status'),
+        _('blacklisted'),
         default=False,
         help_text=_(
             'Designates whether this user should be treated as active. '
         ),
     )
 
-    info = models.CharField(
-        _('info'),
-        help_text=_(
-            'Info.'
-        ),
+    info = models.TextField(
+        _('Additional notes'),
         max_length=255,
         blank=True
     )
@@ -109,7 +106,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     company = models.ForeignKey(Company,
                                 on_delete=models.CASCADE,
-                                verbose_name='Компания',
+                                verbose_name=_('Company'),
                                 related_name='users',
                                 related_query_name='user')
 
@@ -171,18 +168,18 @@ class BlackWhiteList(models.Model):
                              on_delete=models.CASCADE,
                              related_name='rooms',
                              related_query_name='room',
-                             verbose_name='Пользователь')
+                             verbose_name=_('User'))
     room = models.ForeignKey(Room,
                              on_delete=models.CASCADE,
                              related_name='user_lists',
                              related_query_name='user_list',
-                             verbose_name='Помещение')
-    is_blacklisted = models.BooleanField(default=False, verbose_name='В черном списке')
-    is_whitelisted = models.BooleanField(default=False, verbose_name='В белом списке')
+                             verbose_name=_('Room'))
+    is_blacklisted = models.BooleanField(default=False, verbose_name=_('Blacklisted'))
+    is_whitelisted = models.BooleanField(default=False, verbose_name=_('Whitelisted'))
 
     class Meta:
-        verbose_name = 'Черный и Белый Списки Помещения'
-        verbose_name_plural = 'Черный и Белый Списки Помещений'
+        verbose_name = _('Black list and white list')
+        verbose_name_plural = _('Black lists and white lists')
         unique_together = ['room', 'user']
 
     def clean(self):

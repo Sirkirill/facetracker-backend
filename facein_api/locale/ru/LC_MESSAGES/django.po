@@ -1,0 +1,81 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Black list and white list"
+msgstr "Черный и белый список"
+
+msgid "Black lists and white lists"
+msgstr "Черные и белые списки"
+
+msgid "Profiles"
+msgstr "Профили пользователей"
+
+msgid "Names"
+msgstr "Имена"
+
+msgid "Room"
+msgstr "Помещение"
+
+msgid "Rooms"
+msgstr "Помещения"
+
+msgid "Room name"
+msgstr "Название помещения"
+
+msgid "Company"
+msgstr "Компания"
+
+msgid "Flags"
+msgstr "Флаги"
+
+msgid "Company name"
+msgstr "Название компании"
+
+msgid "Companies"
+msgstr "Компании"
+
+msgid "Active"
+msgstr "Активная"
+
+msgid "Additional notes"
+msgstr "Дополнительные заметки"
+
+msgid "Whitelist room"
+msgstr "Помещение с белым списком"
+
+msgid "Only whitelist of people is allowed to enter the room, everybody except blacklist otherwise"
+msgstr "В помещение может попасть определенный круг людей (иначе все, кроме черного списка)"
+
+msgid "Company is using FaceIn now"
+msgstr "Компания пользуется услугами в данный момент"
+
+msgid "Admin Panel FaceIn"
+msgstr "Административная панель FaceIn"
+
+msgid "Designates whether this user should be treated as security guard of the customer company. "
+msgstr "Указывает на то, является ли пользователь охранником клиентской компании."
+
+msgid "Designates whether this user should be treated as admin of the customer company. "
+msgstr "Указывает на то, является ли пользователь администратором клиентской компании"
+
+msgid "Designates whether this user should be treated as active. "
+msgstr "Указывает на то, является ли пользователь активным или его активность приостановлена."
+
+msgid "Blacklisted"
+msgstr "В черном списке"
+
+msgid "Whitelisted"
+msgstr "В белом списке"
+
+msgid "admin status"
+msgstr "Статус администратора"
+
+msgid "blacklisted"
+msgstr "В черном списке"
+
+msgid "security status"
+msgstr "Статус охранника"

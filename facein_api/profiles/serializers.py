@@ -17,7 +17,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ('pk',
                   'username',
-                  'first_name', 'last_name', 'info',
+                  'first_name', 'last_name',
                   'company',
                   'is_superuser', 'is_security', 'is_admin', 'is_blacklisted',
                   'date_joined', 'last_login')
@@ -34,7 +34,7 @@ class StaffSerializer(serializers.ModelSerializer):
         model = User
         fields = ('pk',
                   'username',
-                  'first_name', 'last_name', 'info',
+                  'first_name', 'last_name',
                   'company',
                   'is_superuser', 'is_security', 'is_admin', 'is_blacklisted',
                   'date_joined', 'last_login')

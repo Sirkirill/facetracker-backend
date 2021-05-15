@@ -10,6 +10,7 @@ from .admin import main_admin_site
 
 urlpatterns = [
     path('api/profiles/', include('profiles.urls', namespace='profiles')),
+    path('i18n/', include('django.conf.urls.i18n')),
 ] + i18n_patterns(path('admin/', main_admin_site.urls),
                   prefix_default_language='ru')
 
