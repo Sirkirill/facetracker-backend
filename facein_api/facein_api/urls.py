@@ -6,13 +6,15 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+from .admin import admin_site
 from .admin import main_admin_site
 
-urlpatterns = [
-    path('api/profiles/', include('profiles.urls', namespace='profiles')),
-    path('i18n/', include('django.conf.urls.i18n')),
-] + i18n_patterns(path('admin/', main_admin_site.urls),
-                  prefix_default_language='ru')
+urlpatterns = [path('api/profiles/', include('profiles.urls', namespace='profiles')),
+               path('i18n/', include('django.conf.urls.i18n')),
+               ]
+urlpatterns += i18n_patterns(path('superadmin/', main_admin_site.urls),
+                             prefix_default_language='ru')
+urlpatterns += i18n_patterns(path('admin/', admin_site.urls), prefix_default_language='ru')
 
 schema_view = get_schema_view(
     openapi.Info(

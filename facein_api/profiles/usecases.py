@@ -1,8 +1,11 @@
+import os
+
+from django.contrib.auth.models import Group
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.exceptions import ValidationError
 
-from facein_api.authentication import RedisAuthentication
 from common.usecases import UseCase
+from facein_api.authentication import RedisAuthentication
 from profiles.models import User
 
 
@@ -67,3 +70,26 @@ class ChangePassword(UseCase):
     def execute(self):
         self.user.set_password(self.password)
         self.user.save()
+
+
+class RegisterUser(UseCase):
+
+    def __init__(self, obj, company_id=None):
+        """
+        Attributes:
+            user: user which is creating a new user.
+            company_id: company in which User is created.
+        """
+        self.obj = obj
+        self.company_id = company_id
+
+    def execute(self):
+        default_password = os.urandom(32).hex()
+        self.obj.set_password(default_password)
+        self.obj.info += f'\ndefault password :{default_password}'
+        # Here should be checked that obj already has company_id field. Now this is done before.
+        if self.company_id:
+            self.obj.company_id = self.company_id
+        self.obj.save()
+        if self.obj.is_admin:
+            self.obj.groups.add(Group.objects.get(name='Admin'))

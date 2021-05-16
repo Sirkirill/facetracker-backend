@@ -18,6 +18,7 @@ ignore = D200,
        D104, # Missing docstring in public package #(e.g. __init__ files)
        D105, # Missing docstring in magic method
        D106, # Missing docstring in public nested class
+       F811, # redefinition of unused  (modeladmins)
        Q000, # Allow double quotes
        Q001, # """ instead of '''
        W503, # W503 line break before binary operator
