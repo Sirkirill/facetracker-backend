@@ -1,11 +1,13 @@
 import os
 
 from django.contrib.auth.models import Group
+from django.utils.translation import ugettext_lazy as _
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.exceptions import ValidationError
 
 from common.usecases import UseCase
 from facein_api.authentication import RedisAuthentication
+from profiles.models import BlackWhiteList
 from profiles.models import User
 
 
@@ -74,22 +76,53 @@ class ChangePassword(UseCase):
 
 class RegisterUser(UseCase):
 
-    def __init__(self, obj, company_id=None):
+    def __init__(self, user, company_id=None):
         """
         Attributes:
             user: user which is creating a new user.
             company_id: company in which User is created.
         """
-        self.obj = obj
+        self.user = user
         self.company_id = company_id
 
     def execute(self):
         default_password = os.urandom(32).hex()
-        self.obj.set_password(default_password)
-        self.obj.info += f'\ndefault password :{default_password}'
+        self.user.set_password(default_password)
+        self.user.info += f'\ndefault password :{default_password}'
         # Here should be checked that obj already has company_id field. Now this is done before.
         if self.company_id:
-            self.obj.company_id = self.company_id
-        self.obj.save()
-        if self.obj.is_admin:
-            self.obj.groups.add(Group.objects.get(name='Admin'))
+            self.user.company_id = self.company_id
+        self.user.save()
+        if self.user.is_admin:
+            self.user.groups.add(Group.objects.get(name='Admin'))
+
+
+class CheckAbilityToEnterRoom(UseCase):
+
+    def __init__(self, user, room):
+        """
+        Attributes:
+            user: user which is creating a new user.
+            room: room to which User is trying to enter.
+        """
+        self.user = user
+        self.room = room
+
+    def execute(self):
+        errors = []
+        if self.user.is_blacklisted:
+            errors.append(_("User is blacklisted for this company"))
+        if self.room.company != self.user.company:
+            errors.append(_("User is from another company."))
+        try:
+            list_record = BlackWhiteList.objects.get(user=self.user, room=self.room)
+            if self.room.is_whitelisted and not list_record.is_whitelisted:
+                errors.append(_("User is not from the whitelist of the whitelisted room"))
+            if list_record.is_blacklisted:
+                errors.append(_('User is blacklisted for this room'))
+        except BlackWhiteList.DoesNotExist:
+            if self.room.is_whitelisted:
+                errors.append(_("User is not from the whitelist of the whitelisted room"))
+        if errors:
+            return False, '; '.join([str(error) for error in errors])
+        return True, None

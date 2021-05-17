@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework import viewsets
@@ -12,11 +13,13 @@ from common.permissions import Action
 from common.permissions import IsAdmin
 from common.permissions import IsSuperUser
 from common.usecases import UseCaseMixin
+from companies.models import Room
 from profiles.serializers import ChangePasswordSerializer
 from profiles.serializers import LoginSerializer
 from profiles.serializers import ProfileSerializer
 from profiles.serializers import StaffSerializer
 from profiles.usecases import ChangePassword
+from profiles.usecases import CheckAbilityToEnterRoom
 from profiles.usecases import LoginUser
 from profiles.usecases import LogoutUser
 
@@ -116,3 +119,16 @@ class StaffViewSet(viewsets.ModelViewSet):
             users_filter &= Q(is_blacklisted=True)
         queryset = User.objects.filter(users_filter)
         return Response(data=self.serializer_class(queryset, many=True).data)
+
+
+class CheckAbilityToEnterRoomView(APIView, UseCaseMixin):
+    usecase = CheckAbilityToEnterRoom
+
+    def get(self, request, user_id, room_id):
+        room = get_object_or_404(Room, pk=room_id)
+        user = get_object_or_404(User, pk=user_id)
+        permission, errors = self._run_usecase(user, room)
+        if permission:
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_202_ACCEPTED, data=errors)

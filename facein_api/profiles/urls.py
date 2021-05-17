@@ -15,4 +15,6 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('change-password/', views.ChangePasswordView.as_view(), name='change-password'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('check/<int:user_id>/room/<int:room_id>/', views.CheckAbilityToEnterRoomView.as_view(),
+         name='check-room-access'),
 ]

@@ -100,3 +100,18 @@ msgstr "Перемещения"
 
 msgid "Companies of rooms are different."
 msgstr "Помещения находятся в разных компаниях."
+
+msgid "User can't be both in black list and white list"
+msgstr "Пользователь не может одновременно находиться в черном и белом списке."
+
+msgid "User is from another company."
+msgstr "Пользователь работает в другой компании."
+
+msgid "User is not from the whitelist of the whitelisted room"
+msgstr "Пользователь не находится в белом списке в помещении, куда есть доступ только людям из белого списка"
+
+msgid "User is blacklisted for this room"
+msgstr "Пользователь находится в черном списке помещения"
+
+msgid "User is blacklisted for this company"
+msgstr "Пользователь находится в черном списке компании"

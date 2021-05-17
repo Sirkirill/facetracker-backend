@@ -124,14 +124,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         ]
 
     def __str__(self):
-        return self.username
+        return f'{self.company}:{self.username}'
 
     def clean(self):
         if self.is_superuser and self.is_blacklisted:
             raise ValidationError(_("Superuser can't be blocked"))
-        company = Company.objects.get(name='FaceIn')
-        if self.is_superuser and self.company_id != company.id:
-            raise ValidationError("Superuser should be a member of FaceIn company")
 
     def get_full_name(self):
         """
@@ -184,4 +181,9 @@ class BlackWhiteList(models.Model):
 
     def clean(self):
         if self.is_blacklisted and self.is_whitelisted:
-            raise ValidationError("User can't be both in black list and white list")
+            raise ValidationError(_("User can't be both in black list and white list"))
+        if self.user.company_id != self.room.company_id:
+            raise ValidationError(_("User is from another company."))
+
+    def __str__(self):
+        return f'{self.user.username}:{self.room}'
