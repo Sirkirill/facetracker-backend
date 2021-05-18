@@ -6,10 +6,16 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+from moves.views import GetCameras
+from moves.views import GetCompaniesView
 from .admin import admin_site
 from .admin import main_admin_site
 
 urlpatterns = [path('api/profiles/', include('profiles.urls', namespace='profiles')),
+               path('api/moves/<int:company_id>/cameras', GetCameras.as_view(),
+                    name='company-cameras'),
+               path('api/companies/', GetCompaniesView.as_view(),
+                    name='companies'),
                path('i18n/', include('django.conf.urls.i18n')),
                ]
 urlpatterns += i18n_patterns(path('superadmin/', main_admin_site.urls),

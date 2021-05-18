@@ -39,7 +39,7 @@ class Camera(models.Model):
                 raise ValidationError(_("Companies of rooms are different."))
 
     def __str__(self):
-        return f'{self.from_room}->{self.to_room}'
+        return f'[{self.to_room.company}]{self.from_room.name}->{self.to_room.name}'
 
 
 class MoveLog(models.Model):
@@ -57,10 +57,22 @@ class MoveLog(models.Model):
                                on_delete=models.DO_NOTHING,
                                related_name='logs',
                                related_query_name='log',
-                               verbose_name='Запись о том, что человек прошел через камеру')
+                               verbose_name=_('Camera'))
     user = models.ForeignKey(User,
                              on_delete=models.DO_NOTHING,
                              related_name='logs',
                              related_query_name='log',
-                             verbose_name='Пользователь')
-    date = models.DateTimeField('date joined', auto_now_add=True)
+                             verbose_name=_('User'))
+    date = models.DateTimeField(_('Event Date'), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _('MoveLog')
+        verbose_name_plural = _('MoveLog')
+        ordering = ['-date']
+
+    def clean(self):
+        if self.camera.to_room and self.user.company_id != self.camera.to_room.company_id:
+            raise ValidationError(_("User is from another company."))
+
+    def __str__(self):
+        return f'{self.camera}:{self.user}'

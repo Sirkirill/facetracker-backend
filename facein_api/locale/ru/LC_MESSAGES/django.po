@@ -115,3 +115,9 @@ msgstr "Пользователь находится в черном списке
 
 msgid "User is blacklisted for this company"
 msgstr "Пользователь находится в черном списке компании"
+
+msgid "MoveLog"
+msgstr "Запись о Перемещении"
+
+msgid "Event Date"
+msgstr "Дата События"

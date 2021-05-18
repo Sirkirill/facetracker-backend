@@ -14,6 +14,9 @@ from common.permissions import IsAdmin
 from common.permissions import IsSuperUser
 from common.usecases import UseCaseMixin
 from companies.models import Room
+from companies.serializers import RoomSerializer
+from moves.usecases import FindCompanyUsers
+from moves.usecases import FindUser
 from profiles.serializers import ChangePasswordSerializer
 from profiles.serializers import LoginSerializer
 from profiles.serializers import ProfileSerializer
@@ -132,3 +135,20 @@ class CheckAbilityToEnterRoomView(APIView, UseCaseMixin):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_202_ACCEPTED, data=errors)
+
+
+class FindUserView(APIView, UseCaseMixin):
+    usecase = FindUser
+
+    def get(self, request, user_id):
+        room = self._run_usecase(user_id)
+        return Response(RoomSerializer(room).data)
+
+
+class FindCompanyUsersView(APIView, UseCaseMixin):
+    usecase = FindCompanyUsers
+
+    def get(self, request):
+        company_id = request.user.company_id
+        rooms_users = self._run_usecase(company_id)
+        return Response(rooms_users)
