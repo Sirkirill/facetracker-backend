@@ -1,11 +1,13 @@
 """facein_api URL Configuration"""
 from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls.static import static
 from django.urls import include
 from django.urls import path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+import settings
 from moves.views import GetCameras
 from moves.views import GetCompaniesView
 from .admin import admin_site
@@ -21,6 +23,8 @@ urlpatterns = [path('api/profiles/', include('profiles.urls', namespace='profile
 urlpatterns += i18n_patterns(path('superadmin/', main_admin_site.urls),
                              prefix_default_language='ru')
 urlpatterns += i18n_patterns(path('admin/', admin_site.urls), prefix_default_language='ru')
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 schema_view = get_schema_view(
     openapi.Info(

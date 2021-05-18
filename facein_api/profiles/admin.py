@@ -31,6 +31,7 @@ class UserAdmin(ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             RegisterUser(obj).execute()
+        super().save_model(request, obj, form, change)
 
 
 @admin.register(User, site=admin_site)

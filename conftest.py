@@ -57,6 +57,7 @@ def multiuser_test(login=True, **users_with_expected_results):
         are added to function scope as user and expected variables.
 
     Attributes:
+        login (bool): indicates if users should be authenticated before running test.
         users_with_expected_results (dict): Works as kwargs. Key is username of user and value is
             a result which is expected from the test.
 

@@ -121,3 +121,15 @@ msgstr "Запись о Перемещении"
 
 msgid "Event Date"
 msgstr "Дата События"
+
+msgid "Photo preview"
+msgstr "Предпросмотр фотографии"
+
+msgid "Photo"
+msgstr "Фотография"
+
+msgid "Photos"
+msgstr "Фотографии"
+
+msgid "Image name should contain only alphanumeric characters or _"
+msgstr "Имя картинки может содержать только буквы, цифры и _"
