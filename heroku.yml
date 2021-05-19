@@ -8,5 +8,5 @@ build:
 run:
   web:
     command:
-      - python /code/facein_api/manage.py load_images && python /code/facein_api/manage.py compilemessages && python /code/facein_api/manage.py collectstatic && python /code/facein_api/manage.py runserver 0.0.0.0:$PORT --noreload
+      - python /code/facein_api/manage.py compilemessages && python /code/facein_api/manage.py collectstatic && python /code/facein_api/manage.py run_server 0.0.0.0:$PORT --noreload
     image: web

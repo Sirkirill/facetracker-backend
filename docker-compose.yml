@@ -3,7 +3,7 @@ version: '3.7'
 services:
   web:
     build: .
-    command: python /code/facein_api/manage.py runserver 0.0.0.0:8002
+    command: python /code/facein_api/manage.py run_server 0.0.0.0:8002
     volumes:
       - .:/code
     ports:
