@@ -59,4 +59,4 @@ class Room(models.Model):
         unique_together = ('company', 'name')
 
     def __str__(self):
-        return f'{self.company.name}:{self.name}'
+        return f'{self.company}:{self.name}'

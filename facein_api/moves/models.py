@@ -39,7 +39,7 @@ class Camera(models.Model):
                 raise ValidationError(_("Companies of rooms are different."))
 
     def __str__(self):
-        return f'[{self.to_room.company}]{self.from_room.name}->{self.to_room.name}'
+        return f'{self.from_room.name}->{self.to_room.name}'
 
 
 class MoveLog(models.Model):

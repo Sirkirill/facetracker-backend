@@ -124,7 +124,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ]
 
     def __str__(self):
-        return f'{self.company}:{self.username}'
+        return f'{self.username}'
 
     def clean(self):
         if self.is_superuser and self.is_blacklisted:

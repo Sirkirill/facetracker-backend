@@ -46,3 +46,9 @@ schema_view = get_schema_view(
 urlpatterns += [
     path('docs/', schema_view.with_ui(cache_timeout=0), name="documentation"),
 ]
+
+if settings.DEBUG_TOOLBAR:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

@@ -14,8 +14,19 @@ from photos.models import User
 @admin.register(Photo, site=main_admin_site)
 class ImageAdmin(ModelAdmin):
     search_fields = ('user__username',)
+    list_filter = ('user__company',)
     readonly_fields = ['img_preview']
-    list_display = ('user', 'img_short_preview')
+    list_display = ('company', 'user', 'img_short_preview')
+
+    fields = ('image', 'user')
+
+    def company(self, obj):
+        if not obj.user:
+            return None
+        return obj.user.company.name
+
+    def get_queryset(self, request):
+        return Photo.objects.select_related('user', 'user__company')
 
     def img_preview(self, obj):
         return mark_safe('<img src="{url}" width="{width}" height={height} />'
@@ -74,13 +85,16 @@ class ImageAdmin(ModelAdmin):
 
 @admin.register(Post, site=main_admin_site)
 class PostAdmin(ModelAdmin):
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('photo', 'move', 'move__camera',
+                                                            'move__camera__to_room',
+                                                            'move__camera__to_room__company')
     list_filter = ('move__camera__to_room__company__name', 'is_important', 'is_reacted')
     list_display = ('move', 'is_important', 'is_reacted')
 
 
 @admin.register(Post, site=admin_site)
 class PostAdmin(ModelAdmin):
-    list_filter = ('is_important', 'is_reacted')
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
@@ -90,5 +104,8 @@ class PostAdmin(ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request)\
-            .filter(move__camera__to_room__company_id=request.user.company_id)
+            .filter(move__camera__to_room__company_id=request.user.company_id)\
+            .select_related('photo', 'move', 'move__camera', 'move__camera__to_room',
+                            'move__camera__to_room__company')
+    list_filter = ('is_important', 'is_reacted')
     list_display = ('move', 'is_important', 'is_reacted')

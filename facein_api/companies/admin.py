@@ -22,7 +22,7 @@ class RoomAdmin(ModelAdmin):
 @admin.register(Room, site=admin_site)
 class RoomAdmin(ModelAdmin):
     def get_queryset(self, request):
-        return super().get_queryset(request).filter(company=request.user.company)
+        return super().get_queryset(request).filter(company_id=request.user.company_id)
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
