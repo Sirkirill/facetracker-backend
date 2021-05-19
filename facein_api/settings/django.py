@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'whitenoise',
+    'dbbackup_ui',
 
     'profiles.apps.ProfilesConfig',
     'companies.apps.CompaniesConfig',

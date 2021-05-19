@@ -12,6 +12,7 @@ from moves.views import GetCameras
 from moves.views import GetCompaniesView
 from .admin import admin_site
 from .admin import main_admin_site
+from .views import BackUpView
 
 urlpatterns = [path('api/profiles/', include('profiles.urls', namespace='profiles')),
                path('api/moves/<int:company_id>/cameras', GetCameras.as_view(),
@@ -20,6 +21,10 @@ urlpatterns = [path('api/profiles/', include('profiles.urls', namespace='profile
                     name='companies'),
                path('i18n/', include('django.conf.urls.i18n')),
                ]
+
+urlpatterns += i18n_patterns(path('superadmin/backups/', BackUpView.as_view(), name='backup'),
+                             prefix_default_language='ru')
+
 urlpatterns += i18n_patterns(path('superadmin/', main_admin_site.urls),
                              prefix_default_language='ru')
 urlpatterns += i18n_patterns(path('admin/', admin_site.urls), prefix_default_language='ru')

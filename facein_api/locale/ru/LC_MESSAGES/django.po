@@ -133,3 +133,21 @@ msgstr "Фотографии"
 
 msgid "Image name should contain only alphanumeric characters or _"
 msgstr "Имя картинки может содержать только буквы, цифры и _"
+
+msgid "Backup Database and Media"
+msgstr "Резервная копия базы данных и медиа файлов"
+
+msgid "Download database backup"
+msgstr "Скачать резервную копию базы данных"
+
+msgid "Download media backup"
+msgstr "Скачать резервную копию медиа файлов"
+
+msgid "Backup"
+msgstr "Резервная копия"
+
+msgid "Backup database"
+msgstr "Резервная копия данных"
+
+msgid "Backup media"
+msgstr "Резервная копия фотографий"
