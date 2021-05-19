@@ -7,6 +7,8 @@ from rest_framework.exceptions import ValidationError
 
 from common.usecases import UseCase
 from facein_api.authentication import RedisAuthentication
+from moves.models import MoveLog
+from photos.models import Post
 from profiles.models import BlackWhiteList
 from profiles.models import User
 
@@ -110,19 +112,45 @@ class CheckAbilityToEnterRoom(UseCase):
 
     def execute(self):
         errors = []
-        if self.user.is_blacklisted:
-            errors.append(_("User is blacklisted for this company"))
-        if self.room.company != self.user.company:
-            errors.append(_("User is from another company."))
-        try:
-            list_record = BlackWhiteList.objects.get(user=self.user, room=self.room)
-            if self.room.is_whitelisted and not list_record.is_whitelisted:
-                errors.append(_("User is not from the whitelist of the whitelisted room"))
-            if list_record.is_blacklisted:
-                errors.append(_('User is blacklisted for this room'))
-        except BlackWhiteList.DoesNotExist:
+        if self.user:
+            if self.user.is_blacklisted:
+                errors.append(_("User is blacklisted for this company"))
+            if self.room.company != self.user.company:
+                errors.append(_("User is from another company."))
+            try:
+                list_record = BlackWhiteList.objects.get(user=self.user, room=self.room)
+                if self.room.is_whitelisted and not list_record.is_whitelisted:
+                    errors.append(_("User is not from the whitelist of the whitelisted room"))
+                if list_record.is_blacklisted:
+                    errors.append(_('User is blacklisted for this room'))
+            except BlackWhiteList.DoesNotExist:
+                if self.room.is_whitelisted:
+                    errors.append(_("User is not from the whitelist of the whitelisted room"))
+        if not self.user:
             if self.room.is_whitelisted:
                 errors.append(_("User is not from the whitelist of the whitelisted room"))
         if errors:
             return False, '; '.join([str(error) for error in errors])
         return True, None
+
+
+class CheckAbilityToPassCamera(UseCase):
+    def __init__(self, user, camera):
+        self.user = user
+        self.camera = camera
+
+    def execute(self):
+        return CheckAbilityToEnterRoom(self.user, self.camera.to_room).execute()
+
+
+class UserPassCamera(UseCase):
+    def __init__(self, camera, user=None, photo=None):
+        self.camera = camera
+        self.user = user
+        self.photo = photo
+
+    def execute(self):
+        permission, errors = CheckAbilityToPassCamera(self.user, self.camera).execute()
+        move = MoveLog.objects.create(camera=self.camera, user=self.user)
+        if not permission:
+            Post.objects.create(move=move, photo=self.photo, note=errors)

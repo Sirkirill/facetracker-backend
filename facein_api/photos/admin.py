@@ -85,16 +85,25 @@ class ImageAdmin(ModelAdmin):
 
 @admin.register(Post, site=main_admin_site)
 class PostAdmin(ModelAdmin):
+    def date(self, obj):
+        return obj.move.date
+    date.short_description = _('Event Date')
+
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('photo', 'move', 'move__camera',
                                                             'move__camera__to_room',
-                                                            'move__camera__to_room__company')
+                                                            'move__camera__to_room__company')\
+            .order_by('-move__date')
     list_filter = ('move__camera__to_room__company__name', 'is_important', 'is_reacted')
-    list_display = ('move', 'is_important', 'is_reacted')
+
+    list_display = ('move', 'is_important', 'is_reacted', 'date')
 
 
 @admin.register(Post, site=admin_site)
 class PostAdmin(ModelAdmin):
+    def date(self, obj):
+        return obj.move.date
+    date.short_description = _('Event Date')
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
@@ -106,6 +115,7 @@ class PostAdmin(ModelAdmin):
         return super().get_queryset(request)\
             .filter(move__camera__to_room__company_id=request.user.company_id)\
             .select_related('photo', 'move', 'move__camera', 'move__camera__to_room',
-                            'move__camera__to_room__company')
+                            'move__camera__to_room__company').order_by('-move__ date')
+
     list_filter = ('is_important', 'is_reacted')
-    list_display = ('move', 'is_important', 'is_reacted')
+    list_display = ('move', 'is_important', 'is_reacted', 'date')
