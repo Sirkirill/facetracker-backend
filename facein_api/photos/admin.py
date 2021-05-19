@@ -5,7 +5,10 @@ from django.utils.translation import ugettext_lazy as _
 
 from facein_api.admin import admin_site
 from facein_api.admin import main_admin_site
+from moves.models import MoveLog
 from photos.models import Photo
+from photos.models import Post
+from photos.models import User
 
 
 @admin.register(Photo, site=main_admin_site)
@@ -36,6 +39,12 @@ class ImageAdmin(ModelAdmin):
 
 @admin.register(Photo, site=admin_site)
 class ImageAdmin(ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['user'].queryset = User.objects.filter(
+            company_id=request.user.company_id)
+        return form
+
     def get_queryset(self, request):
         return super().get_queryset(request).filter(user__company_id=request.user.company_id)
 
@@ -61,3 +70,25 @@ class ImageAdmin(ModelAdmin):
 
     img_preview.short_description = _('Photo preview')
     img_short_preview.short_description = _('Photo preview')
+
+
+@admin.register(Post, site=main_admin_site)
+class PostAdmin(ModelAdmin):
+    list_filter = ('move__camera__to_room__company__name', 'is_important', 'is_reacted')
+    list_display = ('move', 'is_important', 'is_reacted')
+
+
+@admin.register(Post, site=admin_site)
+class PostAdmin(ModelAdmin):
+    list_filter = ('is_important', 'is_reacted')
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['move'].queryset = MoveLog.objects.filter(
+            camera__to_room__company_id=request.user.company_id)
+        return form
+
+    def get_queryset(self, request):
+        return super().get_queryset(request)\
+            .filter(move__camera__to_room__company_id=request.user.company_id)
+    list_display = ('move', 'is_important', 'is_reacted')

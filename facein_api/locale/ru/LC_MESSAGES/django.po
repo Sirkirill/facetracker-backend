@@ -151,3 +151,15 @@ msgstr "Резервная копия данных"
 
 msgid "Backup media"
 msgstr "Резервная копия фотографий"
+
+msgid "Somebody has already reacted on the post"
+msgstr "На пост уже кто-то отреагировал"
+
+msgid "Post is important"
+msgstr "Пост стоит внимания"
+
+msgid "Post"
+msgstr "Пост"
+
+msgid "Posts"
+msgstr "Посты"

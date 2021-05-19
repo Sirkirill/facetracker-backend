@@ -6,6 +6,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
 
+from moves.models import MoveLog
+
 User = get_user_model()
 
 
@@ -51,3 +53,26 @@ class Photo(models.Model):
                 self.image.open()
             except FileNotFoundError:
                 Image.open(BytesIO(self.image_binary)).save(self.image.path)
+
+
+class Post(models.Model):
+    """
+    Post which is created for sending to securities information about users which are trying
+        to move to the rooms they are not allowed.
+    """
+    move = models.OneToOneField(MoveLog, null=True, related_name='post', on_delete=models.SET_NULL,
+                                verbose_name=_('MoveLog'))
+    photo = models.ForeignKey(Photo, verbose_name=_('Photo'),
+                              on_delete=models.SET_NULL,
+                              related_name='posts',
+                              null=True, blank=True)
+    is_important = models.BooleanField(_("Post is important"), default=False)
+    is_reacted = models.BooleanField(_('Somebody has already reacted on the post'), default=False)
+    note = models.TextField(_('Additional notes'), max_length=255, blank=True)
+
+    def __str__(self):
+        return str(self.move)
+
+    class Meta:
+        verbose_name = _('Post')
+        verbose_name_plural = _('Posts')

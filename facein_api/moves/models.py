@@ -59,6 +59,8 @@ class MoveLog(models.Model):
                                related_query_name='log',
                                verbose_name=_('Camera'))
     user = models.ForeignKey(User,
+                             null=True,
+                             blank=True,
                              on_delete=models.DO_NOTHING,
                              related_name='logs',
                              related_query_name='log',
@@ -71,8 +73,11 @@ class MoveLog(models.Model):
         ordering = ['-date']
 
     def clean(self):
-        if self.camera.to_room and self.user.company_id != self.camera.to_room.company_id:
-            raise ValidationError(_("User is from another company."))
+        if self.user:
+            if self.camera.to_room and self.user.company_id != self.camera.to_room.company_id:
+                raise ValidationError(_("User is from another company."))
 
     def __str__(self):
-        return f'{self.camera}:{self.user}'
+        if not self.user:
+            return f'{self.camera}'
+        return f'{self.camera}:{self.user.username}'
