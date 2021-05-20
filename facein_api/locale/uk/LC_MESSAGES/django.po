@@ -1,0 +1,165 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Black list and white list"
+msgstr "Чорний та білий список"
+
+msgid "Black lists and white lists"
+msgstr "Чорні та білі списки"
+
+msgid "Profiles"
+msgstr "Профілі користувачів"
+
+msgid "Names"
+msgstr "Імена"
+
+msgid "Room"
+msgstr "Приміщення"
+
+msgid "Rooms"
+msgstr "Приміщення"
+
+msgid "Room name"
+msgstr "Назва приміщення"
+
+msgid "Company"
+msgstr "Компанія"
+
+msgid "Flags"
+msgstr "Прапори"
+
+msgid "Company name"
+msgstr "Назва компанії"
+
+msgid "Companies"
+msgstr "Компанії"
+
+msgid "Active"
+msgstr "Активна"
+
+msgid "Additional notes"
+msgstr "Додаткові замітки"
+
+msgid "Whitelist room"
+msgstr "Приміщення з білим списком"
+
+msgid "Only whitelist of people is allowed to enter the room, everybody except blacklist otherwise"
+msgstr "У приміщення може потрапити певна кількість людей (інакше - всі, крім чорного списку)"
+
+msgid "Company is using FaceIn now"
+msgstr "Компанія користується послугами в даний момент"
+
+msgid "Main Admin Panel"
+msgstr "Основна Адміністративна Панель"
+
+msgid "Admin Panel"
+msgstr "Адміністративна Панель"
+
+msgid "Designates whether this user should be treated as security guard of the customer company. "
+msgstr "Вказує на те, чи є користувач охоронцем клієнтської компанії."
+
+msgid "Designates whether this user should be treated as admin of the customer company. "
+msgstr "Вказує на те, чи є користувач адміністратором клієнтської компанії"
+
+msgid "Designates whether this user should be treated as active. "
+msgstr "Вказує на те, чи є користувач активним або його активність припинена."
+
+msgid "Blacklisted"
+msgstr "У чорному списку"
+
+msgid "Whitelisted"
+msgstr "У білому списку"
+
+msgid "admin status"
+msgstr "Статус адміністратора"
+
+msgid "blacklisted"
+msgstr "У чорному списку"
+
+msgid "security status"
+msgstr "Статус охоронця"
+
+msgid "Enter Room Camera"
+msgstr "Камера на вході в приміщення"
+
+msgid "Exit Room Camera"
+msgstr "Камера на виході з приміщення"
+
+msgid "Camera"
+msgstr "Камера"
+
+msgid "Cameras"
+msgstr "Камери"
+
+msgid "Moves"
+msgstr "Переміщення"
+
+msgid "Companies of rooms are different."
+msgstr "Приміщення знаходяться в різних компаніях."
+
+msgid "User can not be both in black list and white list"
+msgstr "Користувач не може одночасно перебувати в чорному та білому списках."
+
+msgid "User is from another company."
+msgstr "Користувач працює в іншій компанії."
+
+msgid "User is not from the whitelist of the whitelisted room"
+msgstr "Користувач не знаходиться в білому списку приміщення, куди є доступ тільки людям з білого списку"
+
+msgid "User is blacklisted for this room"
+msgstr "Користувач знаходиться в чорному списку приміщення"
+
+msgid "User is blacklisted for this company"
+msgstr "Користувач знаходиться в чорному списку компанії"
+
+msgid "MoveLog"
+msgstr "Запис про переміщення"
+
+msgid "Event Date"
+msgstr "Дата Події"
+
+msgid "Photo preview"
+msgstr "Попередній перегляд фотографії"
+
+msgid "Photo"
+msgstr "Фотографія"
+
+msgid "Photos"
+msgstr "Фотографії"
+
+msgid "Image name should contain only alphanumeric characters or _"
+msgstr "Ім'я картинки може містити тільки букви, цифри  та _"
+
+msgid "Backup Database and Media"
+msgstr "Резервна копія бази даних і медіа файлів"
+
+msgid "Download database backup"
+msgstr "Завантажити резервну копію бази даних"
+
+msgid "Download media backup"
+msgstr "Завантажити резервну копію медіа файлів"
+
+msgid "Backup"
+msgstr "Резервна копія"
+
+msgid "Backup database"
+msgstr "Резервна копія бази даних"
+
+msgid "Backup media"
+msgstr "Резервна копія фотографій"
+
+msgid "Somebody has already reacted on the post"
+msgstr "На пост вже хтось відреагував"
+
+msgid "Post is important"
+msgstr "Пост вартий уваги"
+
+msgid "Post"
+msgstr "Пост"
+
+msgid "Posts"
+msgstr "Пости"
