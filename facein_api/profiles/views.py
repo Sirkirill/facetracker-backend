@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.exceptions import NotFound
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -14,7 +15,9 @@ from common.permissions import IsAdmin
 from common.permissions import IsSuperUser
 from common.usecases import UseCaseMixin
 from companies.models import Room
+from companies.serializers import CompanySerializer
 from companies.serializers import RoomSerializer
+from moves.models import MoveLog
 from moves.usecases import FindCompanyUsers
 from moves.usecases import FindUser
 from profiles.serializers import ChangePasswordSerializer
@@ -118,7 +121,7 @@ class StaffViewSet(viewsets.ModelViewSet):
         users_filter = Q()
         if not request.user.is_superuser:
             users_filter &= Q(company_id=request.user.company.id)
-        if not request.user.is_admin and not request.user.is_securitys:
+        if not request.user.is_admin and not request.user.is_security:
             users_filter &= Q(is_blacklisted=True)
         queryset = User.objects.filter(users_filter)
         return Response(data=self.serializer_class(queryset, many=True).data)
@@ -141,7 +144,10 @@ class FindUserView(APIView, UseCaseMixin):
     usecase = FindUser
 
     def get(self, request, user_id):
-        room = self._run_usecase(user_id)
+        try:
+            room = self._run_usecase(user_id)
+        except MoveLog.DoesNotExist:
+            raise NotFound()
         return Response(RoomSerializer(room).data)
 
 
@@ -151,4 +157,6 @@ class FindCompanyUsersView(APIView, UseCaseMixin):
     def get(self, request):
         company_id = request.user.company_id
         rooms_users = self._run_usecase(company_id)
-        return Response(rooms_users)
+        company = CompanySerializer(request.user.company).data
+        result = {'company': company, 'room_users': rooms_users}
+        return Response(result)

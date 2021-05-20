@@ -14,8 +14,10 @@ class FindUser(UseCase):
         self.user_id = user_id
 
     def execute(self):
-        last_moved_camera = MoveLog.objects.filter(user_id=self.user_id).latest('date').camera
-        return last_moved_camera.to_room
+        last_moved_camera = MoveLog.objects.filter(user_id=self.user_id).latest('date')
+        if last_moved_camera:
+            return last_moved_camera.camera.to_room
+        raise MoveLog.DoesNotExist
 
 
 class FindCompanyUsers(UseCase):
@@ -23,9 +25,9 @@ class FindCompanyUsers(UseCase):
         self.company_id = company_id
 
     def execute(self):
-        last_moves = MoveLog.objects.filter(user__company_id=self.company_id) \
-            .order_by('user_id', '-date').distinct('user_id') \
-            .values_list('user_id', 'camera__to_room')
+        last_moves = MoveLog.objects.filter(user__company_id=self.company_id)\
+            .select_related('user').order_by('user_id', '-date').distinct('user_id') \
+            .values_list('user__username', 'camera__to_room')
         rooms_users = {}
         for user, room in last_moves:
             rooms_users[room] = rooms_users.get(room, []) + [user]

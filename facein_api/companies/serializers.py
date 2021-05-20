@@ -9,7 +9,7 @@ class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = ('company', 'name', 'info', 'is_whitelisted')
+        fields = ('pk', 'company', 'name', 'info', 'is_whitelisted')
 
 
 class CompanySerializer(serializers.ModelSerializer):
