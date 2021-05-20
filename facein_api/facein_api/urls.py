@@ -8,15 +8,13 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 import settings
-from moves.views import GetCameras
 from moves.views import GetCompaniesView
 from .admin import admin_site
 from .admin import main_admin_site
 from .views import BackUpView
 
 urlpatterns = [path('api/profiles/', include('profiles.urls', namespace='profiles')),
-               path('api/moves/<int:company_id>/cameras', GetCameras.as_view(),
-                    name='company-cameras'),
+               path('api/moves/', include('moves.urls', namespace='moves')),
                path('api/companies/', GetCompaniesView.as_view(),
                     name='companies'),
                path('i18n/', include('django.conf.urls.i18n')),

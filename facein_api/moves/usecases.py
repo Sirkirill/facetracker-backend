@@ -1,6 +1,8 @@
 from common.usecases import UseCase
 from moves.models import Camera
 from moves.models import MoveLog
+from photos.models import Photo
+from photos.models import User
 
 
 class FindUser(UseCase):
@@ -37,3 +39,20 @@ class GetCompanyCameras(UseCase):
     def execute(self):
         return Camera.objects.filter(to_room__company_id=self.company_id).values_list('id',
                                                                                       flat=True)
+
+
+class MakePhotoObjectFromPhoto(UseCase):
+    def __init__(self, photo, company_id=None):
+        self.photo = photo
+        self.company_id = company_id
+
+    def execute(self):
+        name = self.photo.name
+        user = User.objects.filter(username__contains='_'.join(name.split('_')[:2]))
+        if self.company_id:
+            user = user.filter(company_id=self.company_id)
+        if user.exists():
+            photo = Photo.objects.create(image=self.photo, user=user.first())
+        else:
+            photo = Photo.objects.create(image=self.photo)
+        return photo
