@@ -6,18 +6,24 @@ from django.urls import path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
+from rest_framework import routers
 
 import settings
 from moves.views import GetCompaniesView
+from photos.views import PostViewSet
 from .admin import admin_site
 from .admin import main_admin_site
 from .views import BackUpView
+
+router = routers.DefaultRouter()
+router.register(r'', PostViewSet, basename='posts')
 
 urlpatterns = [path('api/profiles/', include('profiles.urls', namespace='profiles')),
                path('api/moves/', include('moves.urls', namespace='moves')),
                path('api/companies/', GetCompaniesView.as_view(),
                     name='companies'),
                path('i18n/', include('django.conf.urls.i18n')),
+               path('api/posts/', include(router.urls), name='posts')
                ]
 
 urlpatterns += i18n_patterns(path('superadmin/backups/', BackUpView.as_view(), name='backup'),
