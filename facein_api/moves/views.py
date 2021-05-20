@@ -19,7 +19,7 @@ class GetCameras(APIView, UseCaseMixin):
 
     def get(self, request, *args, **kwargs):
         result = {}
-        for company in Company.objects.all():
+        for company in Company.objects.filter(is_active=True):
             companies = self._run_usecase(company.id)
             result[company.id] = companies
         return Response(result)
