@@ -17,5 +17,5 @@ class PostViewSet(ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = Post.objects.select_related('move__camera__to_room__company')\
             .filter(move__camera__to_room__company_id=request.user.company_id)\
-            .order_by('-move_date')[:60]
+            .order_by('-move__date')[:60]
         return Response(data=self.serializer_class(queryset, many=True).data)
