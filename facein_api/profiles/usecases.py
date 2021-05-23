@@ -29,7 +29,8 @@ class LoginUser(UseCase):
         else:
             raise AuthenticationFailed('User password is wrong.')
 
-        return {'id': user.id, 'username': user.username, 'token': token}
+        return {'id': user.id, 'username': user.username, 'token': token,
+                'is_security': user.is_security}
 
 
 class LogoutUser(UseCase):
