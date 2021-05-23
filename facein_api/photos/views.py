@@ -7,7 +7,7 @@ from photos.serializers import PostSerializer
 
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.select_related('move__camera__to_room__company')\
-        .filter(move__camera__to_room__company__is_active=True)
+        .filter(move__camera__to_room__company__is_active=True).order_by('-move_date')
     serializer_class = PostSerializer
 
     def update(self, request, *args, **kwargs):
