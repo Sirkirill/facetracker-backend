@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'whitenoise',
     'dbbackup_ui',
+    'corsheaders',
 
     'profiles.apps.ProfilesConfig',
     'companies.apps.CompaniesConfig',
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
