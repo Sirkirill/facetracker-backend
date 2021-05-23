@@ -1,13 +1,18 @@
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from companies.serializers import RoomSerializer
 from photos.models import Photo
 from photos.models import Post
-from profiles.serializers import StaffSerializer
 
 
 class PhotoSerializer(ModelSerializer):
-    user = StaffSerializer()
+    user = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+        if not obj:
+            return None
+        return f'{obj.username}:{obj.first_name} {obj.last_name}'
 
     class Meta:
         model = Photo
@@ -17,6 +22,10 @@ class PhotoSerializer(ModelSerializer):
 class PostSerializer(ModelSerializer):
     room = RoomSerializer()
     photo = PhotoSerializer()
+    date = serializers.SerializerMethodField()
+
+    def get_date(self, obj):
+        return obj.move.date
 
     def to_representation(self, instance):
         instance.room = instance.move.camera.to_room
@@ -24,4 +33,4 @@ class PostSerializer(ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('pk', 'room', 'photo', 'is_important', 'is_reacted', 'note')
+        fields = ('pk', 'room', 'photo', 'is_important', 'is_reacted', 'note', 'date')
