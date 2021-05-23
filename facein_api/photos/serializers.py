@@ -10,6 +10,7 @@ class PhotoSerializer(ModelSerializer):
     user = serializers.SerializerMethodField()
 
     def get_user(self, obj):
+        obj = obj.user
         if not obj:
             return None
         return f'{obj.username}:{obj.first_name} {obj.last_name}'
