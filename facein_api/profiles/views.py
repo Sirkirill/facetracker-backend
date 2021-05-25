@@ -112,17 +112,11 @@ class StaffViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         """
-        List of all users.
-        Superuser receives all the users.
-        Admin receives all the users of the admin company.
-        Security receives all the users of the securities company.
-        Ordinary user receives only active users in user company.
+        List of all users of the company.
         """
         users_filter = Q()
-        if not request.user.is_superuser:
-            users_filter &= Q(company_id=request.user.company.id)
-        if not request.user.is_admin and not request.user.is_security:
-            users_filter &= Q(is_blacklisted=True)
+        users_filter &= Q(company_id=request.user.company.id)
+        users_filter &= Q(is_blacklisted=True)
         queryset = User.objects.filter(users_filter)
         return Response(data=self.serializer_class(queryset, many=True).data)
 
@@ -143,9 +137,9 @@ class CheckAbilityToEnterRoomView(APIView, UseCaseMixin):
 class FindUserView(APIView, UseCaseMixin):
     usecase = FindUser
 
-    def get(self, request, user_id):
+    def get(self, request, username):
         try:
-            room = self._run_usecase(user_id)
+            room = self._run_usecase(username)
         except MoveLog.DoesNotExist:
             raise NotFound()
         return Response(RoomSerializer(room).data)

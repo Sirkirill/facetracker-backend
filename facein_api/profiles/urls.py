@@ -17,6 +17,6 @@ urlpatterns = [
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('check/<int:user_id>/room/<int:room_id>/', views.CheckAbilityToEnterRoomView.as_view(),
          name='check-room-access'),
-    path('find/<int:user_id>', views.FindUserView.as_view(), name='find-user'),
+    path('find/<str:username>', views.FindUserView.as_view(), name='find-user'),
     path('find/', views.FindCompanyUsersView.as_view(), name='find-users'),
 ]

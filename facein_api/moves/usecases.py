@@ -10,11 +10,11 @@ class FindUser(UseCase):
     Find Room in which user was last time.
     """
 
-    def __init__(self, user_id):
-        self.user_id = user_id
+    def __init__(self, username):
+        self.username = username
 
     def execute(self):
-        last_moved_camera = MoveLog.objects.filter(user_id=self.user_id).latest('date')
+        last_moved_camera = MoveLog.objects.filter(username=self.username).latest('date')
         if last_moved_camera:
             return last_moved_camera.camera.to_room
         raise MoveLog.DoesNotExist
