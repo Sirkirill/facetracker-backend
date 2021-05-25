@@ -1,3 +1,5 @@
+from rest_framework.generics import get_object_or_404
+
 from common.usecases import UseCase
 from moves.models import Camera
 from moves.models import MoveLog
@@ -14,7 +16,9 @@ class FindUser(UseCase):
         self.username = username
 
     def execute(self):
-        last_moved_camera = MoveLog.objects.filter(username=self.username).latest('date')
+        user = get_object_or_404(User, username=self.username)
+        last_moved_camera = MoveLog.objects.filter(user__username=user.username,
+                                                   user__company_id=user.company_id).latest('date')
         if last_moved_camera:
             return last_moved_camera.camera.to_room
         raise MoveLog.DoesNotExist

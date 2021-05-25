@@ -52,4 +52,4 @@ class ChangePasswordSerializer(serializers.Serializer):
 class StaffSerializer2(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username',)
+        fields = ('username', 'first_name', 'last_name')
