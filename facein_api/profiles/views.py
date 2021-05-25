@@ -138,7 +138,7 @@ class FindUserView(APIView, UseCaseMixin):
 
     def get(self, request, username):
         try:
-            room = self._run_usecase(username)
+            room = self._run_usecase(username, company_id=request.user.company_id)
         except MoveLog.DoesNotExist:
             raise NotFound()
         return Response(room.name)
