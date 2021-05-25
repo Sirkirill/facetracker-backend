@@ -16,7 +16,6 @@ from common.permissions import IsSuperUser
 from common.usecases import UseCaseMixin
 from companies.models import Room
 from companies.serializers import CompanySerializer
-from companies.serializers import RoomSerializer
 from moves.models import MoveLog
 from moves.usecases import FindCompanyUsers
 from moves.usecases import FindUser
@@ -24,6 +23,7 @@ from profiles.serializers import ChangePasswordSerializer
 from profiles.serializers import LoginSerializer
 from profiles.serializers import ProfileSerializer
 from profiles.serializers import StaffSerializer
+from profiles.serializers import StaffSerializer2
 from profiles.usecases import ChangePassword
 from profiles.usecases import CheckAbilityToEnterRoom
 from profiles.usecases import LoginUser
@@ -116,9 +116,8 @@ class StaffViewSet(viewsets.ModelViewSet):
         """
         users_filter = Q()
         users_filter &= Q(company_id=request.user.company.id)
-        users_filter &= Q(is_blacklisted=True)
         queryset = User.objects.filter(users_filter)
-        return Response(data=self.serializer_class(queryset, many=True).data)
+        return Response(data=StaffSerializer2(queryset, many=True).data)
 
 
 class CheckAbilityToEnterRoomView(APIView, UseCaseMixin):
@@ -142,7 +141,7 @@ class FindUserView(APIView, UseCaseMixin):
             room = self._run_usecase(username)
         except MoveLog.DoesNotExist:
             raise NotFound()
-        return Response(RoomSerializer(room).data)
+        return Response(room.name)
 
 
 class FindCompanyUsersView(APIView, UseCaseMixin):
